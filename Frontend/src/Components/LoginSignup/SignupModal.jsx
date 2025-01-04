@@ -1,10 +1,27 @@
-import React from "react";
-import google from "../../assets/google.svg";
-import facebook from "../../assets/facebook.svg";
-import apple from "../../assets/apple.svg";
+import React, { useState } from "react";
+import axios from "axios";
 
-const SignupModal = ({ show, onClose }) => {
+const SignUpModal = ({ show, onClose, onLogin }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+
   if (!show) return null; // If `show` is false, don't render anything
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/users/register", { name, email, password, phone });
+      // Save the token in local storage or state
+      localStorage.setItem("token", response.data.token);
+      onClose(); // Close the modal on successful sign-up
+    } catch (err) {
+      setError("Error signing up. Please try again.");
+    }
+  };
 
   return (
     <div
@@ -19,7 +36,7 @@ const SignupModal = ({ show, onClose }) => {
         {/* Modal Header */}
         <div className="flex items-center justify-between p-2 md:p-5 border-b rounded-t dark:border-gray-600">
           <h3 className="text-medium font-semibold text-gray-900 dark:text-white mx-auto">
-            Log in or sign up
+            Sign up
           </h3>
           <button
             type="button"
@@ -50,7 +67,24 @@ const SignupModal = ({ show, onClose }) => {
           <div className="text-xl mb-4 font-medium text-gray-800">
             Welcome to Airbnb
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label
+                htmlFor="name"
+                className="block text-gray-700 font-semibold mb-2"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -63,6 +97,25 @@ const SignupModal = ({ show, onClose }) => {
                 id="email"
                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="phone"
+                className="block text-gray-700 font-semibold mb-2"
+              >
+                Phone Number
+              </label>
+              <input
+                type="text"
+                id="phone"
+                className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
               />
             </div>
@@ -78,58 +131,27 @@ const SignupModal = ({ show, onClose }) => {
                 id="password"
                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
+            {error && <div className="text-red-500 mb-4">{error}</div>}
             <button
               type="submit"
               className="w-full mt-4 py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg font-light text-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
-              Continue
+              Sign Up
             </button>
-            <button
-              type="submit"
-              className="relative flex items-center justify-center w-full space-x-5 mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              <img
-                className="absolute left-4 h-5"
-                src={google}
-                alt="Google logo"
-              />
-              Continue with Google
-            </button>
-            <button
-              type="submit"
-              className="relative flex items-center justify-center w-full mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              <img
-                className="absolute left-4 h-5"
-                src={apple}
-                alt="Apple logo"
-              />
-              Continue with Apple
-            </button>
-
-            <button
-              type="submit"
-              className="relative flex items-center justify-center w-full mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              <img
-                className="absolute left-4"
-                width="22"
-                height="22"
-                src="https://img.icons8.com/fluency-systems-regular/50/new-post.png"
-                alt="new-post"
-              />
-              Continue with email
-            </button>
-            <button
-              type="submit"
-              className="relative flex items-center justify-center w-full mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              <img className="absolute h-5 left-4" src={facebook} />
-              Continue with Facebook
-            </button>
+            <p className="text-center mt-4">
+              Already have an account?{" "}
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={onLogin}
+              >
+                Log in
+              </span>
+            </p>
           </form>
         </div>
       </div>
@@ -137,4 +159,4 @@ const SignupModal = ({ show, onClose }) => {
   );
 };
 
-export default SignupModal;
+export default SignUpModal;

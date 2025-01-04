@@ -1,22 +1,34 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import connectDB from './db.js';
-import listings from './routes/listings.js';
-import cors from 'cors';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const connectDB = require('./db');
+const listings = require('./routes/listings');
+const users = require('./routes/users');
+const bookings = require('./routes/bookings');
 
 dotenv.config();
-
-const app = express();
 
 // Connect to MongoDB
 connectDB();
 
+const app = express();
+
 // Middleware
-app.use(cors());
+// CORS Middleware
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
-app.use('/api', listings);
+app.use('/api/listings', listings);
+app.use('/api/users', users);
+app.use('/api/bookings', bookings);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

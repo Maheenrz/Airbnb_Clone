@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import google from "../../assets/google.svg";
 import facebook from "../../assets/facebook.svg";
 import apple from "../../assets/apple.svg";
 
-const LoginModal = ({ show, onClose }) => {
+const LoginModal = ({ show, onClose, onSignUp }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   if (!show) return null; // If `show` is false, don't render anything
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/api/users/login", { email, password });
+      // Save the token in local storage or state
+      localStorage.setItem("token", response.data.token);
+      onClose(); // Close the modal on successful login
+    } catch (err) {
+      setError("Invalid credentials");
+    }
+  };
 
   return (
     <div
@@ -50,7 +68,7 @@ const LoginModal = ({ show, onClose }) => {
           <div className="text-xl mb-4 font-medium text-gray-800">
             Welcome to Airbnb
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -63,6 +81,8 @@ const LoginModal = ({ show, onClose }) => {
                 id="email"
                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -78,17 +98,29 @@ const LoginModal = ({ show, onClose }) => {
                 id="password"
                 className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
+            {error && <div className="text-red-500 mb-4">{error}</div>}
             <button
               type="submit"
               className="w-full mt-4 py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg font-light text-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               Continue
             </button>
+            <p className="text-center mt-4">
+              Don't have an account?{" "}
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={onSignUp}
+              >
+                Sign up
+              </span>
+            </p>
             <button
-              type="submit"
+              type="button"
               className="relative flex items-center justify-center w-full space-x-5 mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               <img
@@ -99,7 +131,7 @@ const LoginModal = ({ show, onClose }) => {
               Continue with Google
             </button>
             <button
-              type="submit"
+              type="button"
               className="relative flex items-center justify-center w-full mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               <img
@@ -111,7 +143,7 @@ const LoginModal = ({ show, onClose }) => {
             </button>
 
             <button
-              type="submit"
+              type="button"
               className="relative flex items-center justify-center w-full mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               <img
@@ -124,7 +156,7 @@ const LoginModal = ({ show, onClose }) => {
               Continue with email
             </button>
             <button
-              type="submit"
+              type="button"
               className="relative flex items-center justify-center w-full mt-4 py-3 text-sm text-gray-800 border border-black rounded-lg font-medium  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               <img className="absolute h-5 left-4" src={facebook} />
