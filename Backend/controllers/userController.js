@@ -75,11 +75,35 @@ exports.login = [
   }
 ];
 
-exports.getProfile = async (req, res) => {
+exports.logout = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    req.user.tokens = req.user.tokens.filter((token) => token.token !== req.token);
+    await req.user.save();
+    res.send();
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).send(error);
   }
+};
+
+// Become a host
+exports.becomeHost = async (req, res) => {
+  try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      user.isHost = true;
+      await user.save();
+
+      res.json({ message: 'User is now a host' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+exports.getProfile = async (req, res) => {
+  res.send(req.user);
 };
