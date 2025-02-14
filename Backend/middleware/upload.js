@@ -3,15 +3,15 @@ const path = require('path');
 
 // Set storage engine
 const storage = multer.diskStorage({
-  destination: './uploads/', // Directory to save uploaded files
+  destination: './uploads/', // Save files in 'uploads' folder
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
   }
 });
 
 // Check file type
 function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
+  const filetypes = /jpeg|jpg|png|gif|avif/; // Add 'avif' to the allowed file types
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
 

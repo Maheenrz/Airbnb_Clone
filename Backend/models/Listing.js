@@ -1,20 +1,3 @@
-// import mongoose from 'mongoose';
-
-// const ListingSchema = new mongoose.Schema({
-//   title: { type: String, required: true },
-//   description: { type: String, required: true },
-//   price_per_night: { type: Number, required: true },
-//   rating: { type: Number },
-//   reviews: { type: Number },
-//   image_urls: { type: [String], required: true },
-//   category: { type: String, required: true }, // Added category field
-// });
-
-// const Listing = mongoose.model('Listing', ListingSchema);
-// export default Listing;
-
-
-
 const mongoose = require('mongoose');
 
 const listingSchema = new mongoose.Schema({
@@ -36,21 +19,23 @@ const listingSchema = new mongoose.Schema({
   bedrooms: { type: Number, required: true },
   bathrooms: { type: Number, required: true },
   maxGuests: { type: Number, required: true },
+  infants: { type: Number, default: 0 },
+  adults: { type: Number, default: 1 },
+  children: { type: Number, default: 0 },
+  pets: { type: Number, default: 0 },
   availability: [{
     startDate: Date,
     endDate: Date
   }],
+  destination: { type: String, required: true }, // Add destination field
   createdAt: { type: Date, default: Date.now }
 });
+
+module.exports = mongoose.model('Listing', listingSchema);
 
 // Add indexes for better search performance
 listingSchema.index({ 'location.city': 1, 'location.country': 1 });
 listingSchema.index({ price_per_night: 1 });
 listingSchema.index({ category: 1 });
 
-module.exports = mongoose.model('Listing', listingSchema);
-
-
-
-
-
+module.exports = mongoose.models.Listing || mongoose.model('Listing', listingSchema);

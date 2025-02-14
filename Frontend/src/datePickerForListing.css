@@ -1,0 +1,177 @@
+/* Scoped styles for Listing DatePicker */
+.listing-datepicker {
+  width: 30rem !important; 
+  max-width: none; 
+  padding: 1rem;
+  border-radius: 1rem; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* Ensure the months are displayed in a row */
+.listing-datepicker .react-datepicker__month-container {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  padding: 1rem;
+}
+
+.listing-datepicker .react-datepicker__month-container:last-of-type {
+  border-right: none;
+}
+
+/* Center the calendar */
+.listing-datepicker .react-datepicker__header {
+  background: white;
+  border-bottom: 1px solid #e4e4e7;
+  padding: 12px 0;
+  text-align: center;
+}
+
+.listing-datepicker .react-datepicker__triangle {
+  display: none;
+}
+
+.listing-datepicker .react-datepicker__current-month {
+  font-size: 18px;
+  font-weight: normal;
+  color: #303131;
+}
+
+/* Weekdays Row Styling */
+.listing-datepicker .react-datepicker__day-names {
+  display: flex;
+  justify-content: space-between;
+  color: #9ca3af;
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.listing-datepicker .react-datepicker__day-name {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+}
+
+/* Day Cells Styling */
+.listing-datepicker .react-datepicker__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 0 0px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Remove unnecessary blue circle */
+.listing-datepicker .react-datepicker__day--keyboard-selected::before,
+.listing-datepicker .react-datepicker__day--keyboard-selected {
+  background-color: transparent !important;
+  color: inherit;
+}
+
+/* Circular background for all states */
+.listing-datepicker .react-datepicker__day::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  z-index: -1;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover Effect */
+.listing-datepicker .react-datepicker__day:hover::before {
+  border: 2px solid black;
+}
+
+/* Selected Date */
+.listing-datepicker .react-datepicker__day--selected::before,
+.listing-datepicker .react-datepicker__day--in-selecting-range::before,
+.listing-datepicker .react-datepicker__day--in-range::before {
+  background-color: #000 !important;
+}
+
+.listing-datepicker .react-datepicker__day--selected,
+.listing-datepicker .react-datepicker__day--in-selecting-range,
+.listing-datepicker .react-datepicker__day--in-range {
+  color: white;
+  font-weight: 600;
+}
+
+/* Disabled Days */
+.listing-datepicker .react-datepicker__day--disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.listing-datepicker .react-datepicker__day--disabled:hover::before {
+  border: none;
+}
+
+/* Month Layout Styling */
+.listing-datepicker .react-datepicker__month {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Week Layout */
+.listing-datepicker .react-datepicker__week {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Navigation Buttons */
+.listing-datepicker .react-datepicker__navigation {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.listing-datepicker .react-datepicker__navigation-icon::before {
+  border-color: #9ca3af;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .listing-datepicker .react-datepicker__month-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1128px) {
+  .listing-datepicker {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .listing-datepicker {
+    width: 95%;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .listing-datepicker {
+    width: 100%;
+    padding: 1rem;
+  }
+}

@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 /* Wrapper Styling */
 .react-datepicker {
   width: 54rem !important; 
@@ -33,6 +22,7 @@
   /* margin-left: 1px; */
 }
 
+
 .react-datepicker__month-container:last-of-type {
   border-right: none; /* Remove border on the last month container */
 }
@@ -48,6 +38,7 @@
 .react-datepicker__triangle {
   display: none;
 }
+
 
 .react-datepicker__current-month {
   font-size: 18px;

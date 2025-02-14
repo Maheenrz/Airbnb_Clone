@@ -1,28 +1,3 @@
-// import React from 'react'
-// import { Outlet } from 'react-router-dom'
-// import Header from './Components/Header/Header.jsx'
-// import Footer from './Components/Footer/Footer.jsx'
-
-// const Layout = () => {
-//   return (
-//     <div className='px-9 py-3'>
-//         <Header />
-//         <Outlet />
-//         {showAuthModal && (
-//         <AuthModalContainer onClose={handleCloseAuthModal} />
-//       )}
-//         <Footer />
-//     </div>
-//   )
-// }
-
-// export default Layout
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Components/Header/Header.jsx';
@@ -47,6 +22,8 @@ const Layout = () => {
     setShowAuthModal(false);
   };
 
+ 
+
   return (
     <div className='px-9 py-3'>
       <Header onOpenLogin={handleOpenLogin} onOpenSignUp={handleOpenSignUp} />
@@ -58,7 +35,8 @@ const Layout = () => {
           setIsLogin={setIsLogin} 
         />
       )}
-      <Footer />
+      
+      {/* <Footer /> */}
     </div>
   );
 };

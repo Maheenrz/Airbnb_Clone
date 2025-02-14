@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-const GuestDropdown = () => {
+const GuestDropdown = ({ setGuests, onSearch, destination, dates }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [guestCounts, setGuestCounts] = useState({
-    adults: 0,
+    adults: 1, // Set initial adults to 1
     children: 0,
     infants: 0,
     pets: 0,
@@ -32,7 +32,6 @@ const GuestDropdown = () => {
 
       if (operation === "increment") {
         newCounts[type] += 1;
-
         if (
           (type === "children" || type === "infants") &&
           newCounts.adults === 0
@@ -45,6 +44,12 @@ const GuestDropdown = () => {
 
       return newCounts;
     });
+
+    // Update the parent component with the new guest counts
+    setGuests((prev) => ({
+      ...prev,
+      [type]: operation === "increment" ? prev[type] + 1 : Math.max(0, prev[type] - 1),
+    }));
   };
 
   const totalGuests =
@@ -53,12 +58,24 @@ const GuestDropdown = () => {
     guestCounts.infants +
     guestCounts.pets;
 
+  const handleSearch = () => {
+    const filters = {
+      title: destination,
+      checkIn: dates.checkIn ? dates.checkIn.toISOString() : '',
+      checkOut: dates.checkOut ? dates.checkOut.toISOString() : '',
+      guests: totalGuests,
+    };
+    onSearch(filters);
+  };
+
   return (
-    <div className="relative w-2/6">
+    <div className="relative w-2/6 ">
       <div
         onClick={() => setShowDropdown((prev) => !prev)}
-        className="flex items-center flex-grow p-3 rounded-full hover:bg-[hsl(0,0%,94%)] cursor-pointer"
+        className="flex items-center flex-grow p-2 rounded-full hover:bg-[hsl(0,0%,94%)] cursor-pointer"
       >
+      <div className='border-l-[0.5px] text-gray-300 h-8 mr-5'></div>
+
         <div className="flex-grow" ref={dropdownRef}>
           <label className="text-xs text-gray-900 font-medium">Who</label>
           <input
@@ -72,10 +89,13 @@ const GuestDropdown = () => {
             readOnly
           />
         </div>
-        {/* Search Button */}
-        <div className="h-11 w-11 bg-[#ed4b69] rounded-full flex items-center justify-center cursor-pointer hover:bg-red-600 ml-2">
-          <FaSearch className="text-white h-4 w-4" />
-        </div>
+        <button
+            onClick={handleSearch}
+            className="h-12 w-12  bg-[#ed4b69] rounded-3xl flex items-center justify-center cursor-pointer hover:bg-red-600 "
+          >
+            <FaSearch className="text-white h-4 w-4" />
+            {/* <span className="text-white ml-2">Search</span> */}
+          </button>
       </div>
       {showDropdown && (
         <div
@@ -135,6 +155,7 @@ const GuestDropdown = () => {
               </div>
             ))}
           </div>
+          
         </div>
       )}
     </div>

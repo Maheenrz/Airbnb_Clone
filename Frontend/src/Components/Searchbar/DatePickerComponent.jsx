@@ -3,13 +3,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../customDatePicker.css';
 
-const DatePickerComponent = () => {
-  const [checkInDate, setCheckIn] = useState(null); // Check-In date
-  const [checkOutDate, setCheckOut] = useState(null); // Check-Out date
-  const [focusedInput, setFocusedInput] = useState(null); // Track focused section
+const DatePickerComponent = ({ onDateChange }) => {
+  const [checkInDate, setCheckIn] = useState(null);
+  const [checkOutDate, setCheckOut] = useState(null);
+  const [focusedInput, setFocusedInput] = useState(null);
   const datepickerRef = useRef(null);
 
-  // Close the date picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (datepickerRef.current && !datepickerRef.current.contains(event.target)) {
@@ -25,20 +24,34 @@ const DatePickerComponent = () => {
 
   const handleCheckIn = (date) => {
     setCheckIn(date);
-    setFocusedInput("checkOut"); // Move focus to Check-Out section
+    setFocusedInput("checkOut");
+    
+    // If selected check-in date is after current check-out date, reset check-out
+    if (checkOutDate && date > checkOutDate) {
+      setCheckOut(null);
+    }
+    // Only call onDateChange when we have a valid date
+    if (onDateChange) {
+      onDateChange(date, checkOutDate);
+    }
   };
 
   const handleCheckOut = (date) => {
     setCheckOut(date);
-    setFocusedInput(null); // Close date picker
+    setFocusedInput(null);
+    // Only call onDateChange when we have a valid date
+    if (onDateChange && checkInDate) {
+      onDateChange(checkInDate, date);
+    }
   };
 
   const dateformat = "MMM d";
 
   return (
-    <div className="relative flex-grow flex items-center justify-center gap-2" ref={datepickerRef}>
+    <div className="relative flex-grow  flex items-center justify-center gap-2" ref={datepickerRef}>
       {/* Check-in Section */}
-      <div className="w-10 flex-grow rounded-full p-2.5 hover:bg-[hsl(0,0%,94%)] cursor-pointer" onClick={() => setFocusedInput("checkIn")}>
+      <div className='border-l-[0.5px] text-gray-300 h-8'></div>
+      <div className="w-20 flex-grow  rounded-full p-2 hover:bg-[hsl(0,0%,94%)] cursor-pointer" onClick={() => setFocusedInput("checkIn")}>
         <label className="text-xs text-gray-900 font-medium">Check in</label>
         <input
           readOnly
@@ -49,7 +62,8 @@ const DatePickerComponent = () => {
       </div>
 
       {/* Check-out Section */}
-      <div className="w-10 flex-grow rounded-full p-2.5 hover:bg-[hsl(0,0%,94%)] cursor-pointer" onClick={() => setFocusedInput("checkOut")}>
+      <div className='border-l-[0.5px] text-gray-300 h-8'></div>
+      <div className="w-20 flex-grow rounded-full p-2 hover:bg-[hsl(0,0%,94%)] cursor-pointer " onClick={() => setFocusedInput("checkOut")}>
         <label className="text-xs text-gray-900 font-medium">Check out</label>
         <input
           readOnly
@@ -62,19 +76,19 @@ const DatePickerComponent = () => {
       {/* Date Picker */}
       {focusedInput && (
         <DatePicker
-          className="absolute top-16 left-1/2 transform -translate-x-1/2 w-full max-w-[900px] bg-white p-2 rounded-2xl shadow-lg custom-datepicker"
-          monthsShown={2} // Display 2 months
-          minDate={new Date()} // Disable past dates
-          selected={focusedInput === "checkIn" ? checkInDate : checkOutDate} // Selected date
-          onChange={focusedInput === "checkIn" ? handleCheckIn : handleCheckOut} // Handle date change
+          className="absolute top-16 left-1/2 transform -translate-x-1/2 w-full max-w-[900px] bg-white p-2 rounded-2xl shadow-lg search-datepicker"
+          monthsShown={2}
+          minDate={focusedInput === "checkIn" ? new Date() : checkInDate || new Date()}
+          selected={focusedInput === "checkIn" ? checkInDate : checkOutDate}
+          onChange={focusedInput === "checkIn" ? handleCheckIn : handleCheckOut}
           startDate={checkInDate}
           endDate={checkOutDate}
           selectsStart={focusedInput === "checkIn"}
           selectsEnd={focusedInput === "checkOut"}
           shouldCloseOnSelect={false}
-          open // Always open
+          open
           dateFormat={dateformat}
-          calendarClassName="custom-datepicker" // Add custom class to the date picker
+          calendarClassName="search-datepicker" 
         />
       )}
     </div>
