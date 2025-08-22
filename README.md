@@ -17,7 +17,34 @@ A full-stack Airbnb clone built using the MERN (MongoDB, Express, React, Node.js
 **Backend:** Node.js, Express.js, MongoDB, JWT Authentication  
 **Database:** MongoDB (Mongoose ORM)
 
-## Screenshots
+# 📸 Screenshots
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250819-195253~2.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250819-195255~2.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250822-110614~2.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250819-195305~2.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250819-195311~3.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250819-195339~3.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250822-110500~2.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250822-110527~2.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250822-110542~2.png" width="45%" />
+  <img src="https://raw.githubusercontent.com/Maheenrz/Airbnb_Clone/main/Frontend/public/Screenshot_20250822-110605~2.png" width="45%" />
+</p>
+
+
 
 ### Login
 
